@@ -14,8 +14,9 @@ type FetchOptions = Omit<RequestInit, 'body'> & {
 
 export async function apiFetch<T = unknown>(
   path: string,
-  { body, accessToken, headers, ...rest }: FetchOptions = {},
+  { body, accessToken, headers, cache = 'no-store', ...rest }: FetchOptions = {},
 ): Promise<T> {
+  
   const res = await fetch(`${API_BASE}${path}`, {
     ...rest,
     headers: {
@@ -25,7 +26,7 @@ export async function apiFetch<T = unknown>(
       ...headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,
-    cache: 'no-store',
+    cache,
   });
 
   const isJson = (res.headers.get('content-type') ?? '').includes('application/json');
