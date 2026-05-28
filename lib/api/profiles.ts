@@ -25,3 +25,12 @@ export function createSupplierProfile(input: SupplierProfileInput, accessToken: 
     accessToken,
   });
 }
+
+// GET 
+export function getClientProfile(accessToken: string) {
+  return apiFetch(API_PATHS.CLIENT_PROFILES, { accessToken });
+}
+
+export function getSupplierProfile(accessToken: string) {
+  return apiFetch(API_PATHS.SUPPLIER_PROFILES, { accessToken });
+}

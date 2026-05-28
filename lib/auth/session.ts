@@ -71,14 +71,13 @@ export async function getValidAccessToken(): Promise<string | null> {
 }
 
 /**
- * Asigură că există un access token valid; altfel redirect la /auth/select-role.
- * Returnează tokenul valid. 
+ * Asigură că există un access token valid; altfel redirect la /auth/email.
+ * Returnează tokenul valid.
  * Server Actions / Route Handlers
  */
 export async function requireAccessToken(): Promise<string> {
   const token = await getValidAccessToken();
-  if (!token) redirect(AUTH_ROUTES.ROLE); // nu există sesiune validă, redirect la INREGISTRARE
-  //TREBUIE INLOCUIT CU LOGIN, DAR LOGIN NU E IMPLEMENTAT ÎNCĂ
+  if (!token) redirect(AUTH_ROUTES.EMAIL); // nu există sesiune validă → intrarea unificată login/register
   return token;
 }
 
@@ -88,7 +87,6 @@ export async function requireAccessToken(): Promise<string> {
  */
 export async function requireSession(): Promise<AuthResponse> {
   const session = await getSession();
-  if (!session) redirect(AUTH_ROUTES.ROLE);// nu există sesiune, redirect la INREGISTRARE
-  ////TREBUIE INLOCUIT CU LOGIN, DAR LOGIN NU E IMPLEMENTAT ÎNCĂ
+  if (!session) redirect(AUTH_ROUTES.EMAIL); // nu există sesiune → intrarea unificată login/register
   return session;
 }
