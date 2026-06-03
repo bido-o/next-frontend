@@ -6,6 +6,7 @@ export type FlowStep = 'role' | 'email' | 'verify' | 'profile';
 export type FlowState = {
   role?: Role;
   email?: string;
+  otpSentAt?: number; // timestamp (ms) când a fost trimis ultimul cod OTP
   completedSteps: FlowStep[];
 };
 

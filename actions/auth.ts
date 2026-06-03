@@ -19,6 +19,7 @@ import {
   clearFlowState,
   getFlowState,
   markStepCompleted,
+  updateFlowState,
 } from '@/lib/auth/flow-state';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { requireAccessToken, setSession } from '@/lib/auth/session';
@@ -82,7 +83,11 @@ export async function requestOtp(_: ActionState, formData: FormData): Promise<Ac
     }
   }
 
-  await markStepCompleted('email', { email: parsed.data.email });
+  // User existent → OTP deja trimis, marcăm momentul pentru countdown.
+  await markStepCompleted('email', {
+    email: parsed.data.email,
+    otpSentAt: isNewUser ? undefined : Date.now(),
+  });
   redirect(isNewUser ? AUTH_ROUTES.ROLE : AUTH_ROUTES.VERIFY);
 }
 
@@ -102,8 +107,24 @@ export async function selectRole(_: ActionState, formData: FormData): Promise<Ac
     return { status: 'error', message: apiErrorMessage(err) };
   }
 
-  await markStepCompleted('role', { role: parsed.data.role });
+  await markStepCompleted('role', { role: parsed.data.role, otpSentAt: Date.now() });
   redirect(AUTH_ROUTES.VERIFY);
+}
+
+// Retrimite codul OTP (user existent în DB la acest pas) și actualizează momentul trimiterii
+export async function resendOtp(): Promise<{ otpSentAt: number } | { error: string }> {
+  const flow = await getFlowState();
+  if (!flow.email) redirect(AUTH_ROUTES.EMAIL);
+
+  const now = Date.now();
+  try {
+    await requestOtpApi(flow.email); // user deja există → OTP trimis (rolul e ignorat)
+  } catch (err) {
+    return { error: apiErrorMessage(err) };
+  }
+
+  await updateFlowState({ otpSentAt: now });
+  return { otpSentAt: now };
 }
 
 // Pasul OTP — verifică codul, apoi decide destinația după existența profilului
