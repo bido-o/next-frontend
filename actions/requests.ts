@@ -31,7 +31,8 @@ function apiErrorMessage(err: unknown): string {
     if (err.status === 429) return 'Prea multe încercări. Așteaptă câteva minute.';
     if (err.status === 401) return 'Sesiune expirată. Autentifică-te din nou.';
     if (err.status === 403) return 'Doar clienții pot publica cereri.';
-    return err.message;
+    if (err.status === 400) return 'Datele introduse nu sunt valide. Verifică și reîncearcă.';
+    return 'A apărut o eroare. Reîncearcă.';
   }
   return 'A apărut o eroare. Reîncearcă.';
 }

@@ -37,7 +37,11 @@ export const whenStepSchema = z.object({
 export const budgetStepSchema = z.object({
   budgetTotal: z.coerce
     .number()
-    .positive('Bugetul trebuie să fie mai mare decât 0.'),
+    .positive('Bugetul trebuie să fie mai mare decât 0.')
+    .refine(
+      (v) => Number.isInteger(v * 100),
+      'Bugetul poate avea maxim 2 zecimale.',
+    ),
   budgetFlexible: boolFromForm,
   message: optionalText,
   expiresInHours: z.coerce
