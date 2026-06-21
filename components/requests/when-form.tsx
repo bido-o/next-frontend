@@ -42,7 +42,7 @@ export function WhenForm({
         <Label htmlFor="eventDate">Data evenimentului</Label>
         <div className="grid grid-cols-2 gap-3">
           <Input id="eventDate" name="eventDate" type="date" defaultValue={defaultDate} className="h-12 rounded-xl" />
-          <Input name="eventTime" type="time" defaultValue={defaultTime} className="h-12 rounded-xl" />
+          <Input id="eventTime" aria-label="Ora evenimentului" name="eventTime" type="time" defaultValue={defaultTime} className="h-12 rounded-xl" />
         </div>
         {errs.eventDate?.[0] && <p className="text-sm text-red-600">{errs.eventDate[0]}</p>}
         {errs.eventTime?.[0] && <p className="text-sm text-red-600">{errs.eventTime[0]}</p>}
