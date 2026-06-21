@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
 // Gol ("" din FormData) → undefined, ca să trateze corect câmpurile opționale.
-const emptyToUndefined = (v: unknown) =>
-  typeof v === 'string' && v.trim() === '' ? undefined : v;
+const emptyToUndefined = (v: unknown) => {
+  if (v == null) return undefined;
+  return typeof v === 'string' && v.trim() === '' ? undefined : v;
+};
 
 // Toggle-urile trimit un hidden input cu "true"/"false".
 const boolFromForm = z.preprocess((v) => v === 'true' || v === 'on' || v === true, z.boolean());
