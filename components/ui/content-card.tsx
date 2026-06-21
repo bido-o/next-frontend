@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-export function AuthCard({ children, className }: {
+export function ContentCard({ children, className }: {
   children: React.ReactNode;
   className?: string;
 }) {

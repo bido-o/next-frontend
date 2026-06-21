@@ -1,4 +1,4 @@
-import { AuthCard } from '@/components/auth/auth-card';
+import { ContentCard } from '@/components/ui/content-card';
 
 export default function AuthLayout({
   children,
@@ -7,7 +7,7 @@ export default function AuthLayout({
 }) {
   return (
     <main className="min-h-screen flex items-center justify-center bg-cream p-4 sm:p-6">
-      <AuthCard>{children}</AuthCard>
+      <ContentCard>{children}</ContentCard>
     </main>
   );
 }
