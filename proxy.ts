@@ -23,7 +23,6 @@ function isExpired(token: string, skewSeconds = 30): boolean {
  * setează cookie-urile noi și redirecționează la aceeași adresă — astfel
  * request-ul următor ajunge la pagină cu un token proaspăt.
  *
- * (Next.js 16: convenția `middleware` a fost redenumită `proxy`.)
  */
 export async function proxy(req: NextRequest) {
   const access = req.cookies.get(COOKIE_NAMES.ACCESS)?.value;
@@ -51,6 +50,7 @@ export async function proxy(req: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       path: '/',
     };
+    
     response.cookies.set(COOKIE_NAMES.ACCESS, tokens.accessToken, {
       ...base,
       maxAge: COOKIE_MAX_AGE.ACCESS,
