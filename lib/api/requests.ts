@@ -15,9 +15,11 @@ export type CreateRequestInput = {
   expiresAt?: string; 
 };
 
+export type RequestStatus = 'OPEN' | 'CLOSED' | 'EXPIRED' | 'CANCELLED';
+
 export type RequestResponse = {
   id: number;
-  nrPersons: number | null;
+  nrPersons: number;
   budgetTotal: number;
   budgetFlexible: boolean;
   eventDate: string;
@@ -28,7 +30,7 @@ export type RequestResponse = {
   createdAt: string;
   updatedAt: string;
   expiresAt: string | null;
-  status: 'OPEN' | 'CLOSED' | 'EXPIRED' | 'CANCELLED';
+  status: RequestStatus;
   clientId: number;
   eventTypeId: number;
   eventTypeName: string;
@@ -44,4 +46,10 @@ export function createRequest(input: CreateRequestInput, accessToken: string) {
 
 export function getRequest(id: number, accessToken: string) {
   return apiFetch<RequestResponse>(`${API_PATHS.REQUESTS}/${id}`, { accessToken });
+}
+
+// Listează cererile utilizatorului curent. Gateway-ul filtrează automat
+// după clientId din JWT, deci clientul primește doar propriile cereri.
+export function listRequests(accessToken: string) {
+  return apiFetch<RequestResponse[]>(API_PATHS.REQUESTS, { accessToken });
 }

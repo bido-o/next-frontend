@@ -63,3 +63,14 @@ export const EXPIRY_OPTIONS = [
   { value: 168, label: '1 săpt.' },
 ] as const;
 export const DEFAULT_EXPIRY_HOURS = 48;
+
+// ─────────── Dashboard ───────────
+
+// Etichetă + ton de culoare pentru fiecare status de cerere.
+// `tone` se mapează la clase Tailwind în componenta StatusBadge.
+export const REQUEST_STATUS_META = {
+  OPEN: { label: 'Așteaptă oferte', tone: 'green' },
+  CLOSED: { label: 'Finalizată', tone: 'blue' },
+  EXPIRED: { label: 'Expirată', tone: 'neutral' },
+  CANCELLED: { label: 'Anulată', tone: 'neutral' },
+} as const;
