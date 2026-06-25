@@ -36,6 +36,24 @@ export type RequestResponse = {
   eventTypeName: string;
 };
 
+// Oglindește RequestPublicDto din bidding-service — proiecția pentru furnizori.
+// Omite intenționat clientId, locationAddress și updatedAt (date sensibile).
+export type RequestPublicResponse = {
+  id: number;
+  nrPersons: number;
+  budgetTotal: number;
+  budgetFlexible: boolean;
+  eventDate: string;
+  locationCity: LocationCity | null;
+  message: string | null;
+  deliveryIncluded: boolean;
+  createdAt: string;
+  expiresAt: string | null;
+  status: RequestStatus;
+  eventTypeId: number;
+  eventTypeName: string;
+};
+
 export function createRequest(input: CreateRequestInput, accessToken: string) {
   return apiFetch<RequestResponse>(API_PATHS.REQUESTS, {
     method: 'POST',
@@ -52,4 +70,9 @@ export function getRequest(id: number, accessToken: string) {
 // după clientId din JWT, deci clientul primește doar propriile cereri.
 export function listRequests(accessToken: string) {
   return apiFetch<RequestResponse[]>(API_PATHS.REQUESTS, { accessToken });
+}
+
+// Listează cererile deschise disponibile pentru furnizori (proiecție publică).
+export function listAvailableRequests(accessToken: string) {
+  return apiFetch<RequestPublicResponse[]>(`${API_PATHS.REQUESTS}/public`, { accessToken });
 }

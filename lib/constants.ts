@@ -29,6 +29,7 @@ export const API_PATHS = {
   CLIENT_PROFILES: '/api/client-profiles',
   SUPPLIER_PROFILES: '/api/supplier-profiles',
   REQUESTS: '/api/requests',
+  OFFERS: '/api/offers',
   EVENT_TYPES: '/api/event-types',
 } as const;
 
@@ -65,6 +66,14 @@ export const EXPIRY_OPTIONS = [
 export const DEFAULT_EXPIRY_HOURS = 48;
 
 // ─────────── Dashboard ───────────
+
+// Etichetă + ton de culoare pentru fiecare status de ofertă.
+export const OFFER_STATUS_META = {
+  PENDING: { label: 'În așteptare', tone: 'green' },
+  ACCEPTED: { label: 'Câștigată', tone: 'blue' },
+  NOT_CHOSEN: { label: 'Nu a fost aleasă', tone: 'neutral' },
+  CANCELLED: { label: 'Anulată', tone: 'neutral' },
+} as const;
 
 // Etichetă + ton de culoare pentru fiecare status de cerere.
 // `tone` se mapează la clase Tailwind în componenta StatusBadge.
