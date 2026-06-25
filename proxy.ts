@@ -67,5 +67,5 @@ export async function proxy(req: NextRequest) {
 
 // Rulează doar pe paginile protejate care randează date din API.
 export const config = {
-  matcher: ['/', '/requests/:path*'],
+  matcher: ['/', '/requests/:path*', '/supplier/:path*'],
 };

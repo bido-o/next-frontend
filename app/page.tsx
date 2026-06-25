@@ -8,7 +8,12 @@ import {
   type ClientProfile,
   type SupplierProfile,
 } from '@/lib/api/profiles';
-import { listRequests, type RequestResponse } from '@/lib/api/requests';
+import {
+  listRequests,
+  listAvailableRequests,
+  type RequestResponse,
+  type RequestPublicResponse,
+} from '@/lib/api/requests';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { requireSession } from '@/lib/auth/session';
 import { ROLES } from '@/lib/constants';
@@ -35,14 +40,17 @@ export default async function Home() {
   let initials = '?';
 
   if (role === ROLES.SUPPLIER) {
-    let profile: SupplierProfile | null = null;
-    try {
-      profile = await getSupplierProfile(session.accessToken);
-    } catch {
-      profile = null;
-    }
+    // Fetch independent — un eșec pe un endpoint nu golește tot dashboard-ul.
+    const [profileRes, requestsRes] = await Promise.allSettled([
+      getSupplierProfile(session.accessToken),
+      listAvailableRequests(session.accessToken),
+    ]);
+    const profile: SupplierProfile | null =
+      profileRes.status === 'fulfilled' ? profileRes.value : null;
+    const requests: RequestPublicResponse[] =
+      requestsRes.status === 'fulfilled' ? requestsRes.value : [];
     initials = profile?.companyName ? initialsFrom(profile.companyName) : '?';
-    content = <SupplierDashboard profile={profile} />;
+    content = <SupplierDashboard profile={profile} requests={requests} />;
   } else {
     // Fetch independent — un eșec pe un endpoint nu golește tot dashboard-ul.
     const [profileRes, requestsRes] = await Promise.allSettled([

@@ -31,8 +31,8 @@ const CLIENT_NAV: NavItem[] = [
 
 const SUPPLIER_NAV: NavItem[] = [
   { label: 'Acasă', icon: Home09Icon, href: '/' },
-  { label: 'Cereri', icon: Search01Icon, href: null },
-  { label: 'Ofertele mele', icon: Note01Icon, href: null },
+  { label: 'Cereri', icon: Search01Icon, href: '/supplier/requests' },
+  { label: 'Ofertele mele', icon: Note01Icon, href: '/supplier/offers' },
   { label: 'Cont', icon: UserIcon, href: null },
 ];
 
