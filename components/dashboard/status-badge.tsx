@@ -1,5 +1,6 @@
-import { REQUEST_STATUS_META } from '@/lib/constants';
+import { REQUEST_STATUS_META, OFFER_STATUS_META } from '@/lib/constants';
 import type { RequestStatus } from '@/lib/api/requests';
+import type { OfferStatus } from '@/lib/api/offers';
 import { cn } from '@/lib/utils';
 
 const TONE_CLASSES: Record<string, string> = {
@@ -8,8 +9,15 @@ const TONE_CLASSES: Record<string, string> = {
   neutral: 'bg-black/5 text-dark/60',
 };
 
-export function StatusBadge({ status }: { status: RequestStatus }) {
-  const meta = REQUEST_STATUS_META[status];
+type Props =
+  | { status: RequestStatus; variant?: 'request' }
+  | { status: OfferStatus; variant: 'offer' };
+
+export function StatusBadge(props: Props) {
+  const meta =
+    props.variant === 'offer'
+      ? OFFER_STATUS_META[props.status as OfferStatus]
+      : REQUEST_STATUS_META[props.status as RequestStatus];
 
   return (
     <span
