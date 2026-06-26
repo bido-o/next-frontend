@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { StatusBadge } from '@/components/dashboard/status-badge';
 import type { RequestResponse } from '@/lib/api/requests';
 import { LOCATION_CITIES } from '@/lib/constants';
@@ -19,7 +21,10 @@ export function RequestCard({ request }: { request: RequestResponse }) {
     .join(' · ');
 
   return (
-    <article className="rounded-2xl border border-black/5 bg-white p-4">
+    <Link
+      href={`/requests/${request.id}`}
+      className="block rounded-2xl border border-black/5 bg-white p-4 transition-colors hover:bg-white/70"
+    >
       <div className="mb-2 flex items-center justify-between gap-2">
         <StatusBadge status={request.status} />
         <span className="text-xs font-medium text-dark/30">#{request.id}</span>
@@ -35,6 +40,6 @@ export function RequestCard({ request }: { request: RequestResponse }) {
           {request.budgetFlexible && <span className="font-normal text-dark/40"> · flexibil</span>}
         </span>
       </div>
-    </article>
+    </Link>
   );
 }

@@ -26,6 +26,11 @@ export function listMyOffers(accessToken: string) {
   return apiFetch<SentOfferResponse[]>(`${API_PATHS.OFFERS}/sent`, { accessToken });
 }
 
+// Ofertele primite pe o cerere (vizibile doar proprietarului cererii).
+export function listRequestOffers(requestId: number, accessToken: string) {
+  return apiFetch<OfferResponse[]>(`${API_PATHS.REQUESTS}/${requestId}/offers`, { accessToken });
+}
+
 // Oglindește CreateOfferDto din bidding-service.
 export type CreateOfferInput = {
   totalPrice: number;
