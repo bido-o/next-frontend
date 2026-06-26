@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { StatusBadge } from '@/components/dashboard/status-badge';
 import type { RequestPublicResponse } from '@/lib/api/requests';
 import { LOCATION_CITIES } from '@/lib/constants';
@@ -69,12 +71,12 @@ export function AvailableRequestCard({ request }: { request: RequestPublicRespon
           {budgetFmt.format(request.budgetTotal)} RON
           {request.budgetFlexible && <span className="font-normal text-dark/40"> · flexibil</span>}
         </span>
-        <button
-          type="button"
+        <Link
+          href={`/supplier/requests/${request.id}/offer`}
           className="rounded-full bg-dark px-4 py-2 text-sm font-medium text-white transition-transform active:translate-y-px"
         >
           Ofertează →
-        </button>
+        </Link>
       </div>
     </article>
   );
