@@ -25,3 +25,20 @@ export type SentOfferResponse = OfferResponse & {
 export function listMyOffers(accessToken: string) {
   return apiFetch<SentOfferResponse[]>(`${API_PATHS.OFFERS}/sent`, { accessToken });
 }
+
+// Oglindește CreateOfferDto din bidding-service.
+export type CreateOfferInput = {
+  totalPrice: number;
+  upfrontPayment: number;
+  description?: string;
+  onlinePaymentAvailable: boolean;
+};
+
+// Trimite o ofertă pentru o cerere: POST /api/requests/{requestId}/offers
+export function createOffer(requestId: number, input: CreateOfferInput, accessToken: string) {
+  return apiFetch<OfferResponse>(`${API_PATHS.REQUESTS}/${requestId}/offers`, {
+    method: 'POST',
+    body: input,
+    accessToken,
+  });
+}
