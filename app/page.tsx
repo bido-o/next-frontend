@@ -8,6 +8,7 @@ import {
   type ClientProfile,
   type SupplierProfile,
 } from '@/lib/api/profiles';
+import { listMyOffers, type SentOfferResponse } from '@/lib/api/offers';
 import {
   listRequests,
   listAvailableRequests,
@@ -41,16 +42,19 @@ export default async function Home() {
 
   if (role === ROLES.SUPPLIER) {
     // Fetch independent — un eșec pe un endpoint nu golește tot dashboard-ul.
-    const [profileRes, requestsRes] = await Promise.allSettled([
+    const [profileRes, requestsRes, offersRes] = await Promise.allSettled([
       getSupplierProfile(session.accessToken),
       listAvailableRequests(session.accessToken),
+      listMyOffers(session.accessToken),
     ]);
     const profile: SupplierProfile | null =
       profileRes.status === 'fulfilled' ? profileRes.value : null;
     const requests: RequestPublicResponse[] =
       requestsRes.status === 'fulfilled' ? requestsRes.value : [];
+    const sentOffers: SentOfferResponse[] =
+      offersRes.status === 'fulfilled' ? offersRes.value : [];
     initials = profile?.companyName ? initialsFrom(profile.companyName) : '?';
-    content = <SupplierDashboard profile={profile} requests={requests} />;
+    content = <SupplierDashboard profile={profile} requests={requests} sentOffers={sentOffers} />;
   } else {
     // Fetch independent — un eșec pe un endpoint nu golește tot dashboard-ul.
     const [profileRes, requestsRes] = await Promise.allSettled([

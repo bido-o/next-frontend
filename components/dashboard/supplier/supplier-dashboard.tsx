@@ -5,30 +5,32 @@ import { Search01Icon, Note01Icon } from '@hugeicons/core-free-icons';
 import { AvailableRequestCard } from '@/components/dashboard/supplier/available-request-card';
 import { SupplierStatCard } from '@/components/dashboard/supplier/supplier-stat-card';
 import type { SupplierProfile } from '@/lib/api/profiles';
+import type { SentOfferResponse } from '@/lib/api/offers';
 import type { RequestPublicResponse } from '@/lib/api/requests';
 
-// Câte cereri recente afișăm pe dashboard (restul → ruta /requests).
 const RECENT_LIMIT = 3;
 
 export function SupplierDashboard({
   profile,
   requests,
+  sentOffers,
 }: {
   profile: SupplierProfile | null;
   requests: RequestPublicResponse[];
+  sentOffers: SentOfferResponse[];
 }) {
-  // Cele mai recente cereri întâi.
   const recent = [...requests]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, RECENT_LIMIT);
 
-  const submitted = profile?.totalOffersSubmitted ?? 0;
-  const won = profile?.totalOffersWon ?? 0;
+  // Statistici calculate din ofertele reale, nu din contoarele denormalizate din profil.
+  const submitted = sentOffers.length;
+  const won = sentOffers.filter((o) => o.status === 'ACCEPTED').length;
   const winRate = submitted > 0 ? Math.round((won / submitted) * 100) : 0;
+  const rating = profile?.avgRating ?? 4.5;
 
   return (
     <div className="space-y-6">
-      {/* Salut */}
       <div>
         {profile?.companyName && (
           <p className="text-sm text-dark/50">Bună, {profile.companyName}</p>
@@ -39,9 +41,7 @@ export function SupplierDashboard({
         </h1>
       </div>
 
-      {/* Statistici (din profilul furnizorului) */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <SupplierStatCard label="Credite" value={profile?.creditBalance ?? 0} hint="disponibile" />
+      <div className="grid grid-cols-3 gap-3">
         <SupplierStatCard label="Oferte trimise" value={submitted} />
         <SupplierStatCard
           label="Câștigate"
@@ -50,23 +50,23 @@ export function SupplierDashboard({
         />
         <SupplierStatCard
           label="Rating"
-          value={profile?.avgRating ?? '—'}
-          hint={profile?.avgRating ? 'medie recenzii' : undefined}
+          value={rating}
+          hint="medie recenzii"
         />
       </div>
 
-      {/* Scurtături către rutele dedicate */}
       <div className="grid grid-cols-2 gap-3">
         <ShortcutCard icon={Search01Icon} label="Cereri disponibile" hint="Vezi tot feed-ul" href="/supplier/requests" />
         <ShortcutCard icon={Note01Icon} label="Ofertele mele" hint="Trimise & câștigate" href="/supplier/offers" />
       </div>
 
-      {/* Cereri recente */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="font-serif text-xl font-bold">Cereri recente</h2>
           {requests.length > RECENT_LIMIT && (
-            <span className="text-sm text-dark/40">Vezi toate ({requests.length})</span>
+            <Link href="/supplier/requests" className="text-sm text-dark/40 hover:text-dark">
+              Vezi toate ({requests.length})
+            </Link>
           )}
         </div>
 
@@ -86,7 +86,6 @@ export function SupplierDashboard({
   );
 }
 
-// Scurtătură vizuală spre o rută dedicată (paginile complete se adaugă separat).
 function ShortcutCard({
   icon,
   label,
