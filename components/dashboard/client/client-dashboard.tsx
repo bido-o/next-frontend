@@ -19,8 +19,9 @@ export function ClientDashboard({ profile, requests }: {
         {profile?.firstName && (
           <p className="text-sm text-dark/50">Bună, {profile.firstName}</p>
         )}
-        <h1 className="mt-1 font-serif text-3xl font-bold leading-tight">
-          Ce mâncăm la <span className="italic text-orange">următorul eveniment?</span>
+        <h1 className="mt-1 font-serif text-4xl font-semibold leading-[1.02]">
+          Ce mâncăm la{' '}
+          <span className="italic font-medium text-orange">următorul eveniment?</span>
         </h1>
       </div>
 
