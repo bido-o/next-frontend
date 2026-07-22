@@ -3,8 +3,8 @@
 import { useActionState, useState } from 'react';
 
 import { saveWhen } from '@/actions/requests';
-import { IDLE } from '@/actions/request-types';
-import { SubmitButton } from '@/components/auth/submit-button';
+import { IDLE } from '@/actions/types';
+import { SubmitButton } from '@/components/ui/submit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RequestToggle } from '@/components/requests/request-toggle';

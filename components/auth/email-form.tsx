@@ -5,10 +5,10 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 
 import { requestOtp } from '@/actions/auth';
-import { IDLE } from '@/actions/auth-types';
+import { IDLE } from '@/actions/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SubmitButton } from './submit-button';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 export function EmailForm({ defaultEmail }: { defaultEmail?: string }) {
   const [state, action, isPending] = useActionState(requestOtp, IDLE);

@@ -3,10 +3,10 @@
 import { useActionState } from 'react';
 
 import { completeClientProfile } from '@/actions/auth';
-import { IDLE } from '@/actions/auth-types';
+import { IDLE } from '@/actions/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SubmitButton } from './submit-button';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 export function ClientProfileForm() {
   const [state, action, isPending] = useActionState(completeClientProfile, IDLE);

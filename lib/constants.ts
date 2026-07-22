@@ -5,14 +5,14 @@ export const API_BASE = process.env.API_URL ?? 'http://localhost:8080';
 export const COOKIE_NAMES = {
   ACCESS: 'bido_access',
   REFRESH: 'bido_refresh',
-  FLOW: 'bido_flow',
+  AUTH_FLOW: 'bido_auth_flow',
   REQUEST_FLOW: 'bido_request_flow',
 } as const;
 
 export const COOKIE_MAX_AGE = {
   ACCESS: 60 * 15,            // 15 min
   REFRESH: 60 * 60 * 24 * 30, // 30 zile
-  FLOW: 60 * 10,              // 10 min
+  AUTH_FLOW: 60 * 10,         // 10 min
   REQUEST_FLOW: 60 * 20,      // 20 min 
 } as const;
 

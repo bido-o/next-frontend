@@ -5,8 +5,8 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Tick02Icon } from '@hugeicons/core-free-icons';
 
 import { saveEventType } from '@/actions/requests';
-import { IDLE } from '@/actions/request-types';
-import { SubmitButton } from '@/components/auth/submit-button';
+import { IDLE } from '@/actions/types';
+import { SubmitButton } from '@/components/ui/submit-button';
 import type { EventType } from '@/lib/api/event-types';
 import { cn } from '@/lib/utils';
 

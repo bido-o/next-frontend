@@ -4,18 +4,20 @@ import { useActionState, useState } from 'react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 
 import { verifyOtp } from '@/actions/auth';
-import { IDLE } from '@/actions/auth-types';
+import { IDLE } from '@/actions/types';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OtpCountdown } from './otp-countdown';
-import { SubmitButton } from './submit-button';
+import { SubmitButton } from '@/components/ui/submit-button';
 
-export function OtpForm({ email, otpSentAt }: { email: string; otpSentAt: number }) {
+export function OtpForm({ email, otpSentAt }: { email: string; otpSentAt?: number }) {
   const [state, action, isPending] = useActionState(verifyOtp, IDLE);
   const [code, setCode] = useState('');
+  // Fallback stabil pe client dacă lipsește momentul trimiterii (rulează o singură dată).
+  const [sentAt] = useState(() => otpSentAt ?? Date.now());
 
   return (
     <form action={action} className="space-y-5">
@@ -41,7 +43,7 @@ export function OtpForm({ email, otpSentAt }: { email: string; otpSentAt: number
       </InputOTP>
       <input type="hidden" name="otpCode" value={code} />
 
-      <OtpCountdown otpSentAt={otpSentAt} onResent={() => setCode('')} />
+      <OtpCountdown otpSentAt={sentAt} onResent={() => setCode('')} />
 
       {state.status === 'error' && (
         <p className="text-sm text-red-600">

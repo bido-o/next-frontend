@@ -1,9 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
 
-import { ApiError } from '@/lib/api/client';
 import { createRequest } from '@/lib/api/requests';
 import { requireAccessToken } from '@/lib/auth/session';
 import {
@@ -17,25 +15,15 @@ import {
   eventTypeStepSchema,
   whenStepSchema,
 } from '@/lib/validation/request-schemas';
-import type { ActionState } from './request-types';
+import { apiErrorMessage, zodToFieldErrors } from './helpers';
+import type { ActionState } from './types';
 
-function zodToFieldErrors(err: z.ZodError): Record<string, string[]> {
-  const flat = z.flattenError(err);
-  return Object.fromEntries(
-    Object.entries(flat.fieldErrors).map(([k, v]) => [k, (v as string[] | undefined) ?? []]),
-  );
-}
-
-function apiErrorMessage(err: unknown): string {
-  if (err instanceof ApiError) {
-    if (err.status === 429) return 'Prea multe încercări. Așteaptă câteva minute.';
-    if (err.status === 401) return 'Sesiune expirată. Autentifică-te din nou.';
-    if (err.status === 403) return 'Doar clienții pot publica cereri.';
-    if (err.status === 400) return 'Datele introduse nu sunt valide. Verifică și reîncearcă.';
-    return 'A apărut o eroare. Reîncearcă.';
-  }
-  return 'A apărut o eroare. Reîncearcă.';
-}
+// Mesaje specifice fluxului de cereri pentru fiecare status de eroare.
+const REQUEST_ERROR_MESSAGES: Record<number, string> = {
+  401: 'Sesiune expirată. Autentifică-te din nou.',
+  403: 'Doar clienții pot publica cereri.',
+  400: 'Datele introduse nu sunt valide. Verifică și reîncearcă.',
+};
 
 // Pas 1 — tip eveniment + număr persoane
 export async function saveEventType(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -129,7 +117,7 @@ export async function publishRequest(_: ActionState, formData: FormData): Promis
     );
     createdId = created.id;
   } catch (err) {
-    return { status: 'error', message: apiErrorMessage(err) };
+    return { status: 'error', message: apiErrorMessage(err, REQUEST_ERROR_MESSAGES) };
   }
 
   await clearRequestFlow();

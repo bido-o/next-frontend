@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { AuthHeader } from '@/components/auth/auth-header';
 import { OtpForm } from '@/components/auth/otp-form';
-import { getFlowState } from '@/lib/auth/flow-state';
+import { getFlowState } from '@/lib/auth/auth-flow';
 import { AUTH_ROUTES } from '@/lib/constants';
 
 export default async function VerifyPage() {
@@ -12,7 +12,7 @@ export default async function VerifyPage() {
   return (
     <>
       <AuthHeader />
-      <OtpForm email={flow.email} otpSentAt={flow.otpSentAt ?? Date.now()} />
+      <OtpForm email={flow.email} otpSentAt={flow.otpSentAt} />
     </>
   );
 }

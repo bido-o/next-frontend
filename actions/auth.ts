@@ -1,7 +1,6 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
 
 import {
   requestOtp as requestOtpApi,
@@ -20,7 +19,7 @@ import {
   getFlowState,
   markStepCompleted,
   updateFlowState,
-} from '@/lib/auth/flow-state';
+} from '@/lib/auth/auth-flow';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { requireAccessToken, setSession } from '@/lib/auth/session';
 import { AUTH_ROUTES, ROLES, type Role } from '@/lib/constants';
@@ -31,24 +30,8 @@ import {
   roleSchema,
   supplierProfileSchema,
 } from '@/lib/validation/auth-schemas';
-import type { ActionState } from './auth-types';
-
-// Convertește erorile Zod într-un format simplu
-function zodToFieldErrors(err: z.ZodError): Record<string, string[]> {
-  const flat = z.flattenError(err);
-  return Object.fromEntries(
-    Object.entries(flat.fieldErrors).map(([k, v]) => [k, (v as string[] | undefined) ?? []]),
-  );
-}
-
-function apiErrorMessage(err: unknown): string {
-  if (err instanceof ApiError) {
-    if (err.status === 429) return 'Prea multe încercări. Așteaptă câteva minute.';
-    if (err.status === 401) return 'Cod incorect sau expirat.';
-    return err.message;
-  }
-  return 'A apărut o eroare. Reîncearcă.';
-}
+import { apiErrorMessage, zodToFieldErrors } from './helpers';
+import type { ActionState } from './types';
 
 // Verifică dacă userul are deja profil (GET → true, 404 → false)
 async function profileExists(role: Role | undefined, accessToken: string): Promise<boolean> {
@@ -76,7 +59,7 @@ export async function requestOtp(_: ActionState, formData: FormData): Promise<Ac
   try {
     await requestOtpApi(parsed.data.email); // fără rol
   } catch (err) {
-    if (err instanceof ApiError && err.status === 400) {
+    if (err instanceof ApiError && err.code === 'ROLE_MISSING') {
       isNewUser = true; // user nou — are nevoie de rol
     } else {
       return { status: 'error', message: apiErrorMessage(err) };
@@ -142,7 +125,7 @@ export async function verifyOtp(_: ActionState, formData: FormData): Promise<Act
     tokens = await verifyOtpApi(flow.email, parsed.data.otpCode);
     await setSession(tokens);
   } catch (err) {
-    return { status: 'error', message: apiErrorMessage(err) };
+    return { status: 'error', message: apiErrorMessage(err, { 401: 'Cod incorect sau expirat.' }) };
   }
 
   const role = decodeJwt(tokens.accessToken)?.role;

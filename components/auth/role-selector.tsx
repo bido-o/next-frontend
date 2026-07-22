@@ -9,10 +9,10 @@ import {
 } from '@hugeicons/core-free-icons';
 
 import { selectRole } from '@/actions/auth';
-import { IDLE } from '@/actions/auth-types';
+import { IDLE } from '@/actions/types';
 import { ROLES, type Role } from '@/lib/constants';
 import { BidoLogo } from '@/components/bido-logo';
-import { SubmitButton } from './submit-button';
+import { SubmitButton } from '@/components/ui/submit-button';
 import { cn } from '@/lib/utils';
 
 const OPTIONS: Array<{
