@@ -7,6 +7,7 @@ function isExpired(token: string, skewSeconds = 30): boolean {
   try {
     const [, payload] = token.split('.');
     if (!payload) return true;
+    
     const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
     const { exp } = JSON.parse(json) as { exp: number };
     return exp * 1000 < Date.now() + skewSeconds * 1000;

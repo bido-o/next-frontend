@@ -1,3 +1,4 @@
+import 'server-only';
 import { API_BASE } from '@/lib/constants';
 
 export class ApiError extends Error {

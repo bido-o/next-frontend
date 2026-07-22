@@ -1,4 +1,4 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080';
+export const API_BASE = process.env.API_URL ?? 'http://localhost:8080';
 
 // ─────────── Auth&Profile — auth form ───────────
 
@@ -33,9 +33,9 @@ export const API_PATHS = {
 } as const;
 
 export const AUTH_ROUTES = {
-  ROLE: '/auth/select-role',
+  ROLE: '/auth/role',
   EMAIL: '/auth/email',
-  VERIFY: '/auth/verify-code',
+  VERIFY: '/auth/verify',
   PROFILE: '/auth/profile',
 } as const;
 

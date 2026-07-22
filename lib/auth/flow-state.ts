@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { cookies } from 'next/headers';
 import { COOKIE_NAMES, COOKIE_MAX_AGE, type Role } from '@/lib/constants';
 
