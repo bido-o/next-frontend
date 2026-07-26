@@ -35,6 +35,7 @@ export const API_PATHS = {
   REQUEST_OTP: '/api/auth/request-otp',
   VERIFY_OTP: '/api/auth/verify-otp',
   REFRESH_TOKEN: '/api/auth/refresh-token',
+  ADMIN_ME: '/api/auth/admin/me',
   CLIENT_PROFILES: '/api/client-profiles',
   SUPPLIER_PROFILES: '/api/supplier-profiles',
   REQUESTS: '/api/requests',
