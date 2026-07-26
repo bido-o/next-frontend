@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
 
 import { SuccessCard } from '@/components/requests/success-card';
+import { SessionExpiredError } from '@/lib/api/client';
 import { getRequest, type RequestResponse } from '@/lib/api/requests';
-import { requireSession } from '@/lib/auth/session';
+import { endSession, requireSession } from '@/lib/auth/session';
 
 export default async function DonePage({ searchParams }: { searchParams: Promise<{ id?: string }>;}) {
   const { id } = await searchParams;
@@ -14,7 +15,8 @@ export default async function DonePage({ searchParams }: { searchParams: Promise
   let request: RequestResponse | null = null;
   try {
     request = await getRequest(requestId, session.accessToken);
-  } catch {
+  } catch (err) {
+    if (err instanceof SessionExpiredError) await endSession(); // redirect la login
     // Cererea s-a creat; dacă recapitularea nu se poate încărca, arătăm succesul generic.
     request = null;
   }

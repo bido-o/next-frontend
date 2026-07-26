@@ -39,6 +39,10 @@ export const AUTH_ROUTES = {
   PROFILE: '/auth/profile',
 } as const;
 
+// Route Handler intern de logout: șterge cookie-urile de sesiune și redirect la login.
+// Folosit de Server Components, care nu pot scrie cookie-uri în timpul randării.
+export const SESSION_END_ROUTE = '/api/session/end';
+
 // ─────────── Bidding — request form ───────────
 
 export const REQUEST_ROUTES = {

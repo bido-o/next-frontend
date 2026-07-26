@@ -15,12 +15,12 @@ import {
   eventTypeStepSchema,
   whenStepSchema,
 } from '@/lib/validation/request-schemas';
-import { apiErrorMessage, zodToFieldErrors } from './helpers';
+import { handleApiError, zodToFieldErrors } from './helpers';
 import type { ActionState } from './types';
 
-// Mesaje specifice fluxului de cereri pentru fiecare status de eroare.
+// Mesaje specifice fluxului de cereri. 401 nu apare aici: pe cerere autentificată
+// e tratat ca sesiune moartă (redirect la login), nu ca mesaj afișat.
 const REQUEST_ERROR_MESSAGES: Record<number, string> = {
-  401: 'Sesiune expirată. Autentifică-te din nou.',
   403: 'Doar clienții pot publica cereri.',
   400: 'Datele introduse nu sunt valide. Verifică și reîncearcă.',
 };
@@ -117,7 +117,7 @@ export async function publishRequest(_: ActionState, formData: FormData): Promis
     );
     createdId = created.id;
   } catch (err) {
-    return { status: 'error', message: apiErrorMessage(err, REQUEST_ERROR_MESSAGES) };
+    return handleApiError(err, REQUEST_ERROR_MESSAGES);
   }
 
   await clearRequestFlow();

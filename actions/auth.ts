@@ -30,7 +30,7 @@ import {
   roleSchema,
   supplierProfileSchema,
 } from '@/lib/validation/auth-schemas';
-import { apiErrorMessage, zodToFieldErrors } from './helpers';
+import { apiErrorMessage, handleApiError, zodToFieldErrors } from './helpers';
 import type { ActionState } from './types';
 
 // Verifică dacă userul are deja profil (GET → true, 404 → false)
@@ -150,7 +150,7 @@ export async function completeClientProfile(_: ActionState, formData: FormData):
   try {
     await createClientProfile(parsed.data, accessToken);
   } catch (err) {
-    return { status: 'error', message: apiErrorMessage(err) };
+    return handleApiError(err);
   }
 
   await clearFlowState();
@@ -169,7 +169,7 @@ export async function completeSupplierProfile(_: ActionState, formData: FormData
   try {
     await createSupplierProfile(parsed.data, accessToken);
   } catch (err) {
-    return { status: 'error', message: apiErrorMessage(err) };
+    return handleApiError(err);
   }
 
   await clearFlowState();

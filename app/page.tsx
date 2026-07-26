@@ -9,8 +9,9 @@ import {
   type SupplierProfile,
 } from '@/lib/api/profiles';
 import { listRequests, type RequestResponse } from '@/lib/api/requests';
+import { SessionExpiredError } from '@/lib/api/client';
 import { decodeJwt } from '@/lib/auth/jwt';
-import { requireSession } from '@/lib/auth/session';
+import { endSession, requireSession } from '@/lib/auth/session';
 import { ROLES } from '@/lib/constants';
 
 // Inițialele pentru avatar (max 2 litere).
@@ -38,7 +39,8 @@ export default async function Home() {
     let profile: SupplierProfile | null = null;
     try {
       profile = await getSupplierProfile(session.accessToken);
-    } catch {
+    } catch (err) {
+      if (err instanceof SessionExpiredError) await endSession(); // redirect la login
       profile = null;
     }
     initials = profile?.companyName ? initialsFrom(profile.companyName) : '?';
@@ -49,7 +51,14 @@ export default async function Home() {
       getClientProfile(session.accessToken),
       listRequests(session.accessToken),
     ]);
-    
+
+    // allSettled nu aruncă: dacă un endpoint a picat pe sesiune moartă, redirect la login.
+    for (const res of [profileRes, requestsRes]) {
+      if (res.status === 'rejected' && res.reason instanceof SessionExpiredError) {
+        await endSession();
+      }
+    }
+
     const profile: ClientProfile | null =
       profileRes.status === 'fulfilled' ? profileRes.value : null;
     

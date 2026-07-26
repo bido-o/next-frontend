@@ -2,7 +2,9 @@ import 'server-only';
 
 import { z } from 'zod';
 
-import { ApiError } from '@/lib/api/client';
+import { ApiError, SessionExpiredError } from '@/lib/api/client';
+import { endSession } from '@/lib/auth/session';
+import type { ActionState } from './types';
 
 // Convertește erorile Zod într-un format simplu { câmp: [mesaje] }.
 export function zodToFieldErrors(err: z.ZodError): Record<string, string[]> {
@@ -32,4 +34,17 @@ export function apiErrorMessage(
   }
 
   return generic;
+}
+
+/**
+ * Tratează o eroare dintr-un Server Action autentificat:
+ * - sesiune moartă (401 pe cerere cu token) → închide sesiunea + redirect la login (nu revine);
+ * - orice altă eroare → ActionState de eroare cu mesaj prietenos.
+ */
+export async function handleApiError(
+  err: unknown,
+  statusMessages: Record<number, string> = {},
+): Promise<ActionState> {
+  if (err instanceof SessionExpiredError) await endSession(); // redirect — nu revine
+  return { status: 'error', message: apiErrorMessage(err, statusMessages) };
 }
