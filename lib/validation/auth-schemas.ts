@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { ROLES } from '@/lib/constants';
+import { SIGNUP_ROLES } from '@/lib/constants';
 
 export const roleSchema = z.object({
-  role: z.enum([ROLES.CLIENT, ROLES.SUPPLIER]),
+  role: z.enum(SIGNUP_ROLES),
 });
 
 export const emailSchema = z.object({

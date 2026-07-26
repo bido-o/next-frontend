@@ -10,13 +10,13 @@ import {
 
 import { selectRole } from '@/actions/auth';
 import { IDLE } from '@/actions/types';
-import { ROLES, type Role } from '@/lib/constants';
+import { ROLES, type SignupRole } from '@/lib/constants';
 import { BidoLogo } from '@/components/bido-logo';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { cn } from '@/lib/utils';
 
 const OPTIONS: Array<{
-  value: Role;
+  value: SignupRole;
   title: string;
   description: string;
   icon: typeof ShoppingBag02Icon;
@@ -40,7 +40,7 @@ const OPTIONS: Array<{
 
 export function RoleSelector() {
   const [state, action, isPending] = useActionState(selectRole, IDLE);
-  const [selected, setSelected] = useState<Role | null>(null);
+  const [selected, setSelected] = useState<SignupRole | null>(null);
 
   return (
     <form action={action} className="space-y-4">

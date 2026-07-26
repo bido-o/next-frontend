@@ -1,12 +1,12 @@
 import { apiFetch } from './client';
-import { API_PATHS, type Role } from '@/lib/constants';
+import { API_PATHS, type SignupRole } from '@/lib/constants';
 
 export type AuthResponse = { accessToken: string; refreshToken: string };
 
-export function requestOtp(email: string, role?: Role) {
+export function requestOtp(email: string, role?: SignupRole) {
   return apiFetch<string>(API_PATHS.REQUEST_OTP, {
     method: 'POST',
-    body: { email, role }, // role undefined → backend vede null
+    body: { email, role },
   });
 }
 

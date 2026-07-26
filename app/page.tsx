@@ -12,7 +12,8 @@ import { listRequests, type RequestResponse } from '@/lib/api/requests';
 import { SessionExpiredError } from '@/lib/api/client';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { endSession, requireSession } from '@/lib/auth/session';
-import { ROLES } from '@/lib/constants';
+import { ADMIN_ROUTE, ROLES } from '@/lib/constants';
+import { redirect } from 'next/navigation';
 
 // Inițialele pentru avatar (max 2 litere).
 function initialsFrom(name: string): string {
@@ -31,6 +32,9 @@ function initialsFrom(name: string): string {
 export default async function Home() {
   const session = await requireSession();
   const role = decodeJwt(session.accessToken)?.role;
+
+  // Adminul n-are dashboard de client/furnizor → panoul lui.
+  if (role === ROLES.ADMIN) redirect(ADMIN_ROUTE);
 
   let content: React.ReactNode;
   let initials = '?';

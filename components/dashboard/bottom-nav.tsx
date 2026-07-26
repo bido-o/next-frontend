@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from '@hugeicons/core-free-icons';
 
-import { ROLES, type Role } from '@/lib/constants';
+import { ROLES, type AccountRole } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 type NavItem = {
@@ -41,7 +41,7 @@ const SUPPLIER_NAV: NavItem[] = [
     - mobil  → bară fixă jos, pe toată lățimea
     - desktop → pill compact, centrat, plutitor
 */
-export function BottomNav({ role }: { role?: Role }) {
+export function BottomNav({ role }: { role?: AccountRole }) {
   const pathname = usePathname();
   const items = role === ROLES.SUPPLIER ? SUPPLIER_NAV : CLIENT_NAV;
 

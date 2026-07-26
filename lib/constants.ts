@@ -16,11 +16,20 @@ export const COOKIE_MAX_AGE = {
   REQUEST_FLOW: 60 * 20,      // 20 min 
 } as const;
 
+// Toate rolurile pe care le poate avea un cont, așa cum vin în JWT.
+// Oglindește enum-ul UserRole din auth service.
 export const ROLES = {
   CLIENT: 'CLIENT',
   SUPPLIER: 'SUPPLIER',
+  ADMIN: 'ADMIN',
 } as const;
-export type Role = (typeof ROLES)[keyof typeof ROLES];
+
+export type AccountRole = (typeof ROLES)[keyof typeof ROLES];
+
+// Submulțimea care poate fi ALEASĂ la înregistrare. ADMIN lipsește intenționat
+export const SIGNUP_ROLES = [ROLES.CLIENT, ROLES.SUPPLIER] as const;
+
+export type SignupRole = (typeof SIGNUP_ROLES)[number];
 
 export const API_PATHS = {
   REQUEST_OTP: '/api/auth/request-otp',
@@ -38,6 +47,8 @@ export const AUTH_ROUTES = {
   VERIFY: '/auth/verify',
   PROFILE: '/auth/profile',
 } as const;
+
+export const ADMIN_ROUTE = '/admin';
 
 // Route Handler intern de logout: șterge cookie-urile de sesiune și redirect la login.
 // Folosit de Server Components, care nu pot scrie cookie-uri în timpul randării.

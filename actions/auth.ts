@@ -22,7 +22,7 @@ import {
 } from '@/lib/auth/auth-flow';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { requireAccessToken, setSession } from '@/lib/auth/session';
-import { AUTH_ROUTES, ROLES, type Role } from '@/lib/constants';
+import { ADMIN_ROUTE, AUTH_ROUTES, ROLES, type AccountRole } from '@/lib/constants';
 import {
   clientProfileSchema,
   emailSchema,
@@ -34,7 +34,7 @@ import { apiErrorMessage, handleApiError, zodToFieldErrors } from './helpers';
 import type { ActionState } from './types';
 
 // Verifică dacă userul are deja profil (GET → true, 404 → false)
-async function profileExists(role: Role | undefined, accessToken: string): Promise<boolean> {
+async function profileExists(role: AccountRole | undefined, accessToken: string): Promise<boolean> {
   try {
     if (role === ROLES.SUPPLIER) {
       await getSupplierProfile(accessToken);
@@ -129,6 +129,13 @@ export async function verifyOtp(_: ActionState, formData: FormData): Promise<Act
   }
 
   const role = decodeJwt(tokens.accessToken)?.role;
+
+  // Adminul nu are profil de client/furnizor → direct în panoul de admin.
+  if (role === ROLES.ADMIN) {
+    await clearFlowState();
+    redirect(ADMIN_ROUTE);
+  }
+
   if (await profileExists(role, tokens.accessToken)) {
     await clearFlowState();
     redirect('/'); // user existent cu profil → homepage
