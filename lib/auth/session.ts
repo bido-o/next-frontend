@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { refreshToken as refreshTokenApi, type AuthResponse } from '@/lib/api/auth';
-import { AUTH_ROUTES, COOKIE_MAX_AGE, COOKIE_NAMES } from '@/lib/constants';
+import { AUTH_ROUTES, COOKIE_MAX_AGE, COOKIE_NAMES, SESSION_END_ROUTE } from '@/lib/constants';
 import { isExpired } from './jwt';
 
 const baseOptions = {
@@ -40,6 +40,25 @@ export async function clearSession() {
   const store = await cookies();
   store.delete(COOKIE_NAMES.ACCESS);
   store.delete(COOKIE_NAMES.REFRESH);
+}
+
+/**
+ * Închide o sesiune moartă și redirecționează la login, ștergând cookie-urile.
+ *
+ * Din Server Actions putem scrie cookie-uri → le ștergem aici și mergem direct
+ * la login (un singur hop). Din Server Components scrierea e interzisă în timpul
+ * randării → `clearSession` aruncă, iar noi ocolim prin Route Handler-ul de logout,
+ * care are un context HTTP unde poate șterge cookie-urile.
+ */
+export async function endSession(): Promise<never> {
+  let cleared = false;
+  try {
+    await clearSession();
+    cleared = true;
+  } catch {
+    // Server Component: cookie-urile nu pot fi scrise în timpul randării.
+  }
+  redirect(cleared ? AUTH_ROUTES.EMAIL : SESSION_END_ROUTE);
 }
 
 /* ─────────────── refresh ─────────────── */

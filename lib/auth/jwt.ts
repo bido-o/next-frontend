@@ -1,9 +1,9 @@
-import type { Role } from '@/lib/constants';
+import type { AccountRole } from '@/lib/constants';
 
 export type JwtPayload = {
   sub: string;
   email: string;
-  role: Role;
+  role: AccountRole;
   exp: number;
   iat: number;
 };

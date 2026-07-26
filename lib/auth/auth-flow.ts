@@ -1,11 +1,11 @@
-import type { Role } from '@/lib/constants';
+import type { SignupRole } from '@/lib/constants';
 import { COOKIE_NAMES, COOKIE_MAX_AGE } from '@/lib/constants';
 import { createFlowState } from '@/lib/create-flow-state';
 
 export type FlowStep = 'role' | 'email' | 'verify' | 'profile';
 
 export type FlowState = {
-  role?: Role;
+  role?: SignupRole;
   email?: string;
   otpSentAt?: number; // timestamp (ms) când a fost trimis ultimul cod OTP
   completedSteps: FlowStep[];

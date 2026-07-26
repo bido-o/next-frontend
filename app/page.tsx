@@ -9,9 +9,11 @@ import {
   type SupplierProfile,
 } from '@/lib/api/profiles';
 import { listRequests, type RequestResponse } from '@/lib/api/requests';
+import { SessionExpiredError } from '@/lib/api/client';
 import { decodeJwt } from '@/lib/auth/jwt';
-import { requireSession } from '@/lib/auth/session';
-import { ROLES } from '@/lib/constants';
+import { endSession, requireSession } from '@/lib/auth/session';
+import { ADMIN_ROUTE, ROLES } from '@/lib/constants';
+import { redirect } from 'next/navigation';
 
 // Inițialele pentru avatar (max 2 litere).
 function initialsFrom(name: string): string {
@@ -31,6 +33,9 @@ export default async function Home() {
   const session = await requireSession();
   const role = decodeJwt(session.accessToken)?.role;
 
+  // Adminul n-are dashboard de client/furnizor → panoul lui.
+  if (role === ROLES.ADMIN) redirect(ADMIN_ROUTE);
+
   let content: React.ReactNode;
   let initials = '?';
 
@@ -38,10 +43,12 @@ export default async function Home() {
     let profile: SupplierProfile | null = null;
     try {
       profile = await getSupplierProfile(session.accessToken);
-    } catch {
+    } catch (err) {
+      if (err instanceof SessionExpiredError) await endSession(); // redirect la login
       profile = null;
     }
-    initials = profile?.companyName ? initialsFrom(profile.companyName) : '?';
+    const companyName = profile?.companyName;
+    initials = companyName ? initialsFrom(companyName) : '?';
     content = <SupplierDashboard profile={profile} />;
   } else {
     // Fetch independent — un eșec pe un endpoint nu golește tot dashboard-ul.
@@ -49,7 +56,14 @@ export default async function Home() {
       getClientProfile(session.accessToken),
       listRequests(session.accessToken),
     ]);
-    
+
+    // allSettled nu aruncă: dacă un endpoint a picat pe sesiune moartă, redirect la login.
+    for (const res of [profileRes, requestsRes]) {
+      if (res.status === 'rejected' && res.reason instanceof SessionExpiredError) {
+        await endSession();
+      }
+    }
+
     const profile: ClientProfile | null =
       profileRes.status === 'fulfilled' ? profileRes.value : null;
     
