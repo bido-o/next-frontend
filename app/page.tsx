@@ -47,7 +47,8 @@ export default async function Home() {
       if (err instanceof SessionExpiredError) await endSession(); // redirect la login
       profile = null;
     }
-    initials = profile?.companyName ? initialsFrom(profile.companyName) : '?';
+    const companyName = profile?.companyName;
+    initials = companyName ? initialsFrom(companyName) : '?';
     content = <SupplierDashboard profile={profile} />;
   } else {
     // Fetch independent — un eșec pe un endpoint nu golește tot dashboard-ul.
