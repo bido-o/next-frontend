@@ -1,12 +1,4 @@
-import type { AccountRole } from '@/lib/constants';
-
-export type JwtPayload = {
-  sub: string;
-  email: string;
-  role: AccountRole;
-  exp: number;
-  iat: number;
-};
+import type { JwtPayload } from '@/types/auth';
 
 export function decodeJwt(token: string): JwtPayload | null {
   try {

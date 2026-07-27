@@ -3,12 +3,13 @@
 import { useActionState, useState } from 'react';
 
 import { saveWhen } from '@/actions/requests';
-import { IDLE } from '@/actions/types';
+import { IDLE } from '@/actions/action-types';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RequestToggle } from '@/components/requests/request-toggle';
-import { LOCATION_CITIES, type LocationCity } from '@/lib/constants';
+import { LOCATION_CITIES } from '@/lib/constants';
+import type { LocationCity } from '@/types/request';
 import { cn } from '@/lib/utils';
 
 export function WhenForm({

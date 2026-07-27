@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { BidoLogo } from '@/components/bido-logo';
-import type { RequestResponse } from '@/lib/api/requests';
+import type { RequestResponse } from '@/types/request';
 import { LOCATION_CITIES } from '@/lib/constants';
 
 const dateFmt = new Intl.DateTimeFormat('ro-RO', { dateStyle: 'long', timeStyle: 'short' });

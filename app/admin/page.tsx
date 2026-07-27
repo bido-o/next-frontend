@@ -1,10 +1,11 @@
 import { redirect } from 'next/navigation';
 
 import { SuspendButton } from '@/components/admin/suspend-button';
-import { listUsers, type AdminUserListDto } from '@/lib/api/admin';
+import { listUsers } from '@/lib/api/admin';
 import { ApiError, SessionExpiredError } from '@/lib/api/client';
 import { endSession, requireSession } from '@/lib/auth/session';
 import { ROLES } from '@/lib/constants';
+import type { AdminUserListDto } from '@/types/admin';
 
 /**
  * Panoul de admin.

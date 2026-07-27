@@ -2,8 +2,9 @@ import { redirect } from 'next/navigation';
 
 import { SuccessCard } from '@/components/requests/success-card';
 import { SessionExpiredError } from '@/lib/api/client';
-import { getRequest, type RequestResponse } from '@/lib/api/requests';
+import { getRequest } from '@/lib/api/requests';
 import { endSession, requireSession } from '@/lib/auth/session';
+import type { RequestResponse } from '@/types/request';
 
 export default async function DonePage({ searchParams }: { searchParams: Promise<{ id?: string }>;}) {
   const { id } = await searchParams;

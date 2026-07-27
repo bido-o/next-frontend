@@ -16,7 +16,7 @@ import {
   whenStepSchema,
 } from '@/lib/validation/request-schemas';
 import { handleApiError, zodToFieldErrors } from './helpers';
-import type { ActionState } from './types';
+import type { ActionState } from './action-types';
 
 // Mesaje specifice fluxului de cereri. 401 nu apare aici: pe cerere autentificată
 // e tratat ca sesiune moartă (redirect la login), nu ca mesaj afișat.

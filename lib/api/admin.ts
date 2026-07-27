@@ -1,14 +1,6 @@
 import { apiFetch } from './client';
-import { API_PATHS, type AccountRole } from '@/lib/constants';
-
-export type AdminUserListDto = {
-  id: number;
-  email: string;
-  role: AccountRole;
-  suspended: boolean;
-  createdAt: string;
-  lastLoginAt: string | null;
-};
+import { API_PATHS } from '@/lib/constants';
+import type { AdminUserListDto } from '@/types/admin';
 
 /**
  * Conturile gestionabile (client + furnizor); adminii nu apar în listă.

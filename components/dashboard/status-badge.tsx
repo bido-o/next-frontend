@@ -1,5 +1,5 @@
 import { REQUEST_STATUS_META } from '@/lib/constants';
-import type { RequestStatus } from '@/lib/api/requests';
+import type { RequestStatus } from '@/types/request';
 import { cn } from '@/lib/utils';
 
 const TONE_CLASSES: Record<string, string> = {

@@ -1,8 +1,8 @@
 import { NewRequestCta } from '@/components/dashboard/client/new-request-cta';
 import { RequestList } from '@/components/dashboard/client/request-list';
 import { StatCard } from '@/components/dashboard/client/stat-card';
-import type { ClientProfile } from '@/lib/api/profiles';
-import type { RequestResponse } from '@/lib/api/requests';
+import type { ClientProfile } from '@/types/profile';
+import type { RequestResponse } from '@/types/request';
 
 export function ClientDashboard({ profile, requests }: {
   profile: ClientProfile | null;

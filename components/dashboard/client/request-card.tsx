@@ -1,5 +1,5 @@
 import { StatusBadge } from '@/components/dashboard/status-badge';
-import type { RequestResponse } from '@/lib/api/requests';
+import type { RequestResponse } from '@/types/request';
 import { LOCATION_CITIES } from '@/lib/constants';
 
 const dateFmt = new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'short' });

@@ -2,17 +2,14 @@ import { TopBar } from '@/components/dashboard/top-bar';
 import { BottomNav } from '@/components/dashboard/bottom-nav';
 import { ClientDashboard } from '@/components/dashboard/client/client-dashboard';
 import { SupplierDashboard } from '@/components/dashboard/supplier/supplier-dashboard';
-import {
-  getClientProfile,
-  getSupplierProfile,
-  type ClientProfile,
-  type SupplierProfile,
-} from '@/lib/api/profiles';
-import { listRequests, type RequestResponse } from '@/lib/api/requests';
+import { getClientProfile, getSupplierProfile } from '@/lib/api/profiles';
+import { listRequests } from '@/lib/api/requests';
 import { SessionExpiredError } from '@/lib/api/client';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { endSession, requireSession } from '@/lib/auth/session';
 import { ADMIN_ROUTE, ROLES } from '@/lib/constants';
+import type { ClientProfile, SupplierProfile } from '@/types/profile';
+import type { RequestResponse } from '@/types/request';
 import { redirect } from 'next/navigation';
 
 // Inițialele pentru avatar (max 2 litere).
@@ -37,7 +34,7 @@ export default async function Home() {
   if (role === ROLES.ADMIN) redirect(ADMIN_ROUTE);
 
   let content: React.ReactNode;
-  let initials = '?';
+  let initials: string;
 
   if (role === ROLES.SUPPLIER) {
     let profile: SupplierProfile | null = null;

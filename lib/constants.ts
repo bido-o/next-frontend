@@ -17,19 +17,16 @@ export const COOKIE_MAX_AGE = {
 } as const;
 
 // Toate rolurile pe care le poate avea un cont, așa cum vin în JWT.
-// Oglindește enum-ul UserRole din auth service.
+// Oglindește enum-ul UserRole din auth service. (tipul: `AccountRole` din @/types)
 export const ROLES = {
   CLIENT: 'CLIENT',
   SUPPLIER: 'SUPPLIER',
   ADMIN: 'ADMIN',
 } as const;
 
-export type AccountRole = (typeof ROLES)[keyof typeof ROLES];
-
 // Submulțimea care poate fi ALEASĂ la înregistrare. ADMIN lipsește intenționat
+// (tipul: `SignupRole` din @/types)
 export const SIGNUP_ROLES = [ROLES.CLIENT, ROLES.SUPPLIER] as const;
-
-export type SignupRole = (typeof SIGNUP_ROLES)[number];
 
 export const API_PATHS = {
   REQUEST_OTP: '/api/auth/request-otp',
@@ -65,11 +62,11 @@ export const REQUEST_ROUTES = {
 } as const;
 
 
+// (tipul: `LocationCity` din @/types)
 export const LOCATION_CITIES = [
   { value: 'BUCURESTI', label: 'București' },
   { value: 'CLUJ', label: 'Cluj-Napoca' },
 ] as const;
-export type LocationCity = (typeof LOCATION_CITIES)[number]['value'];
 
 // Opțiuni pentru cât timp rămâne deschisă cererea (expires_at).
 export const EXPIRY_OPTIONS = [

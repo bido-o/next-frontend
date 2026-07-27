@@ -3,7 +3,7 @@
 import { useActionState, useState } from 'react';
 
 import { publishRequest } from '@/actions/requests';
-import { IDLE } from '@/actions/types';
+import { IDLE } from '@/actions/action-types';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

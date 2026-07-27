@@ -9,8 +9,9 @@ import {
 } from '@hugeicons/core-free-icons';
 
 import { selectRole } from '@/actions/auth';
-import { IDLE } from '@/actions/types';
-import { ROLES, type SignupRole } from '@/lib/constants';
+import { IDLE } from '@/actions/action-types';
+import { ROLES } from '@/lib/constants';
+import type { SignupRole } from '@/types/auth';
 import { BidoLogo } from '@/components/bido-logo';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { cn } from '@/lib/utils';

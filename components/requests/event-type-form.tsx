@@ -5,9 +5,9 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Tick02Icon } from '@hugeicons/core-free-icons';
 
 import { saveEventType } from '@/actions/requests';
-import { IDLE } from '@/actions/types';
+import { IDLE } from '@/actions/action-types';
 import { SubmitButton } from '@/components/ui/submit-button';
-import type { EventType } from '@/lib/api/event-types';
+import type { EventType } from '@/types/event-type';
 import { cn } from '@/lib/utils';
 
 const STEP = 10;

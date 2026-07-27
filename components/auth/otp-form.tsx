@@ -4,7 +4,7 @@ import { useActionState, useState } from 'react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 
 import { verifyOtp } from '@/actions/auth';
-import { IDLE } from '@/actions/types';
+import { IDLE } from '@/actions/action-types';
 import {
   InputOTP,
   InputOTPGroup,

@@ -1,4 +1,4 @@
-import type { SupplierProfile } from '@/lib/api/profiles';
+import type { SupplierProfile } from '@/types/profile';
 
 export function SupplierDashboard({ profile }: { profile: SupplierProfile | null }) {
   return (

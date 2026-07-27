@@ -11,7 +11,8 @@ import {
   UserIcon,
 } from '@hugeicons/core-free-icons';
 
-import { ROLES, type AccountRole } from '@/lib/constants';
+import { ROLES } from '@/lib/constants';
+import type { AccountRole } from '@/types/auth';
 import { cn } from '@/lib/utils';
 
 type NavItem = {

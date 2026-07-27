@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 
 import { RequestCard } from '@/components/dashboard/client/request-card';
-import type { RequestResponse, RequestStatus } from '@/lib/api/requests';
+import type { RequestResponse, RequestStatus } from '@/types/request';
 import { cn } from '@/lib/utils';
 
 type Filter = 'ALL' | RequestStatus;

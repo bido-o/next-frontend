@@ -2,11 +2,7 @@
 
 import { redirect } from 'next/navigation';
 
-import {
-  requestOtp as requestOtpApi,
-  verifyOtp as verifyOtpApi,
-  type AuthResponse,
-} from '@/lib/api/auth';
+import { requestOtp as requestOtpApi, verifyOtp as verifyOtpApi } from '@/lib/api/auth';
 import {
   createClientProfile,
   createSupplierProfile,
@@ -22,7 +18,7 @@ import {
 } from '@/lib/auth/auth-flow';
 import { decodeJwt } from '@/lib/auth/jwt';
 import { requireAccessToken, setSession } from '@/lib/auth/session';
-import { ADMIN_ROUTE, AUTH_ROUTES, ROLES, type AccountRole } from '@/lib/constants';
+import { ADMIN_ROUTE, AUTH_ROUTES, ROLES } from '@/lib/constants';
 import {
   clientProfileSchema,
   emailSchema,
@@ -30,8 +26,9 @@ import {
   roleSchema,
   supplierProfileSchema,
 } from '@/lib/validation/auth-schemas';
+import type { AccountRole, AuthResponse } from '@/types/auth';
+import type { ActionState } from './action-types';
 import { apiErrorMessage, handleApiError, zodToFieldErrors } from './helpers';
-import type { ActionState } from './types';
 
 // Verifică dacă userul are deja profil (GET → true, 404 → false)
 async function profileExists(role: AccountRole | undefined, accessToken: string): Promise<boolean> {

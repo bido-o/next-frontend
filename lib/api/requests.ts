@@ -1,40 +1,6 @@
 import { apiFetch } from './client';
-import { API_PATHS, type LocationCity } from '@/lib/constants';
-
-// Oglindește CreateRequestDto din bidding-service
-export type CreateRequestInput = {
-  eventTypeId: number;
-  nrPersons: number;
-  budgetTotal: number;
-  budgetFlexible: boolean;
-  eventDate: string; 
-  locationCity?: LocationCity;
-  locationAddress?: string;
-  message?: string;
-  deliveryIncluded: boolean;
-  expiresAt?: string; 
-};
-
-export type RequestStatus = 'OPEN' | 'CLOSED' | 'EXPIRED' | 'CANCELLED';
-
-export type RequestResponse = {
-  id: number;
-  nrPersons: number;
-  budgetTotal: number;
-  budgetFlexible: boolean;
-  eventDate: string;
-  locationCity: LocationCity | null;
-  locationAddress: string | null;
-  message: string | null;
-  deliveryIncluded: boolean;
-  createdAt: string;
-  updatedAt: string;
-  expiresAt: string | null;
-  status: RequestStatus;
-  clientId: number;
-  eventTypeId: number;
-  eventTypeName: string;
-};
+import { API_PATHS } from '@/lib/constants';
+import type { CreateRequestInput, RequestResponse } from '@/types/request';
 
 export function createRequest(input: CreateRequestInput, accessToken: string) {
   return apiFetch<RequestResponse>(API_PATHS.REQUESTS, {

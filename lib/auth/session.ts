@@ -3,8 +3,9 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { refreshToken as refreshTokenApi, type AuthResponse } from '@/lib/api/auth';
+import { refreshToken as refreshTokenApi } from '@/lib/api/auth';
 import { AUTH_ROUTES, COOKIE_MAX_AGE, COOKIE_NAMES, SESSION_END_ROUTE } from '@/lib/constants';
+import type { AuthResponse } from '@/types/auth';
 import { isExpired } from './jwt';
 
 const baseOptions = {

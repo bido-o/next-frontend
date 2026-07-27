@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { ApiError, SessionExpiredError } from '@/lib/api/client';
 import { endSession } from '@/lib/auth/session';
-import type { ActionState } from './types';
+import type { ActionState } from './action-types';
 
 // Convertește erorile Zod într-un format simplu { câmp: [mesaje] }.
 export function zodToFieldErrors(err: z.ZodError): Record<string, string[]> {

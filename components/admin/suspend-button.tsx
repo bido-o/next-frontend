@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 
 import { toggleUserSuspension } from '@/actions/admin';
-import { IDLE } from '@/actions/types';
+import { IDLE } from '@/actions/action-types';
 import { cn } from '@/lib/utils';
 
 /**
